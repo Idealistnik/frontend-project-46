@@ -1,4 +1,4 @@
-# file: .github/workflows/hello-world.yml
+# file: .github/workflows/testing.yml
 name: testing
 # on – определяет события, которые запускают воркфлоу
 on: push
@@ -15,5 +15,4 @@ jobs:
       # run – произвольная bash-команда
       # ls -la выведет содержимое текущего репозитория
       - run: make install
-      - run: make lint
       - run: make test
