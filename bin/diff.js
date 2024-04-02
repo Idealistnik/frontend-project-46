@@ -1,11 +1,9 @@
-
-
-// Тут исполняемый файл с коммандером
+#!/usr/bin/env node
 import { program } from 'commander';
-import genDiff from './index.js';
+import genDiff from '../src/index.js';
 
 
-const func = (genDiff) => (filepath1, filepath2) => genDiff(filepath1, filepath2);
+// const func = (genDiff) => (filepath1, filepath2) => genDiff(filepath1, filepath2);
 
 program
   .name('gendiff')
@@ -16,10 +14,10 @@ program
   .option('-f, --format <type>', 'output format')
   .helpOption('-h, --help', 'output more information')
   .action((filepath1, filepath2) => {
-    const result = func(genDiff)(filepath1, filepath2);
-    console.log(result);
+    const result = genDiff(filepath1, filepath2);
+   console.log(result);
   });
 
 program.parse(); // этой командой считывается инфа передаваемая через командную строку (по идее работа с process.argv)
 
-export default func;
+export default program;
