@@ -7,8 +7,6 @@ import {
   getDiffResult,
 } from './functions.js';
 
-export const func111 = (str) => str.split('').reverse().join('');
-
 const genDiff = (filePath1, filePath2) => {
   const firsrtFileInfo = getData(filePath1);
   const secondFileInfo = getData(filePath2);
