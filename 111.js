@@ -1,29 +1,13 @@
-// тут все мелкие фукнции
-import path from 'path';
-import fs from 'fs';
-import yaml from 'js-yaml';
+// import fs from 'fs';
+// import path from 'path';
 import _ from 'lodash';
+// import {
+//   getInfoFromFile,
+//   getParsedFile,
+//   getFilePathExtension,
+// } from '../src/functions.js';
 
-export const getFileExtension = (file) => file.split('.').at(-1);
-export const getFilePathExtension = (filePath) => path.extname(filePath);
-export const getAbsolutePath = (filePath) => path.resolve(process.cwd(), filePath);
-export const readFile = (absolutePath) => fs.readFileSync(absolutePath);
-
-export const getData = (filePath) => {
-  const fileAbsolutePath = getAbsolutePath(filePath);
-  const data = readFile(fileAbsolutePath);
-  return data;
-};
-
-export const getParsedData = (data, fileExtension) => {
-  switch (fileExtension) {
-    case ('.json'): return JSON.parse(data);
-    case ('.yml'): return yaml.load(data);
-    default: throw new Error('wrong extension');
-  }
-};
-
-export const getDiffList = (obj1, obj2) => {
+export const getDiffObject = (obj1, obj2) => {
   const keys = _.union(_.keys(obj1), _.keys(obj2));
 
   const result = keys.reduce((acc, key) => {
@@ -52,7 +36,7 @@ export const getDiffList = (obj1, obj2) => {
   return result;
 };
 
-export const getDiffResult = (arr) => {
+export const getResult = (arr) => {
   const sorted = _.sortBy(arr, ['key']);
   const result = sorted.map(({
     key, value, status, oldValue,
@@ -82,3 +66,58 @@ export const getDiffResult = (arr) => {
   const result1 = ['{', ...result, '}'].join('\n');
   return result1;
 };
+
+const obj5 = {
+  host: 'hexlet.io',
+  timeout: 50,
+  proxy: '123.234.53.22',
+  follow: false,
+};
+const obj6 = {
+  timeout: 20,
+  verbose: true,
+  host: 'hexlet.io',
+};
+
+// const diff = getDiffObject(obj5, obj6);
+
+// console.log(diff);
+// console.log(getResult(diff));
+
+// const result = sorted.map(({ key, value, status, oldValue }) => {
+//   let sign;
+//   switch (status) {
+//     case 'added': {
+//       sign = '+';
+//       break;
+//     }
+//     case 'deleted': {
+//       sign = '-';
+//       break;
+//     }
+//     case 'changed': {
+//       sign = '+';
+//       break;
+//     }
+//     case 'unchanged': {
+//       sign = ' ';
+//       break;
+//     }
+//     default: throw new Error('wrong status value');
+//   }
+//   const newLine = status === 'changed' ?
+//   ` ${sign} ${key}: ${oldValue}\n - ${key}: ${value}` :
+//   ` ${sign} ${key}: ${value}`;
+//   return newLine;
+// });
+
+const result1 = `{  
+  - follow: false
+    host: hexlet.io
+  - proxy: 123.234.53.22
+  - timeout: 50
+  + timeout: 20
+  + verbose: true
+}`;
+
+console.log(result1);

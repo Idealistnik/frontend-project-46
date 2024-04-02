@@ -19,5 +19,5 @@ link:
 demo:
 	asciinema rec demo.cast
 
-say-hello:
-	echo Hello, World!
+test:
+	NODE_OPTIONS=--experimental-vm-modules npx jest

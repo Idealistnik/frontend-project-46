@@ -1,19 +1,21 @@
 // тут функция для сравнения файлов
 import {
-  getInfoFromFile,
-  getParsedFile,
+  getData,
+  getParsedData,
   getFilePathExtension,
-  getDiffObject,
-  getResult,
+  getDiffList,
+  getDiffResult,
 } from './functions.js';
 
+export const func111 = (str) => str.split('').reverse().join('');
+
 const genDiff = (filePath1, filePath2) => {
-  const firsrtFileInfo = getInfoFromFile(filePath1);
-  const secondFileInfo = getInfoFromFile(filePath2);
-  const firstFile = getParsedFile(firsrtFileInfo, getFilePathExtension(filePath1));
-  const secondFile = getParsedFile(secondFileInfo, getFilePathExtension(filePath2));
-  const diffFile = getDiffObject(firstFile, secondFile);
-  const result = getResult(diffFile);
+  const firsrtFileInfo = getData(filePath1);
+  const secondFileInfo = getData(filePath2);
+  const firstFile = getParsedData(firsrtFileInfo, getFilePathExtension(filePath1));
+  const secondFile = getParsedData(secondFileInfo, getFilePathExtension(filePath2));
+  const diffFile = getDiffList(firstFile, secondFile);
+  const result = getDiffResult(diffFile);
   return result;
 };
 export default genDiff;
