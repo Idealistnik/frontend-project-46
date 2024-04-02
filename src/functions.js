@@ -4,13 +4,12 @@ import fs from 'fs';
 import yaml from 'js-yaml';
 import _ from 'lodash';
 
-export const getFileExtension = (file) => file.split('.').at(-1);    //получить расширение из имени файла
-export const getFilePathExtension = (filePath) => path.extname(filePath);  //получить расширение из пути файла
-export const getAbsolutePath = (filePath) => path.resolve(process.cwd(), filePath);    // process.cwd() ???
+export const getFileExtension = (file) => file.split('.').at(-1);
+export const getFilePathExtension = (filePath) => path.extname(filePath);
+export const getAbsolutePath = (filePath) => path.resolve(process.cwd(), filePath);
 export const readFile = (absolutePath) => fs.readFileSync(absolutePath);
 
 export const getInfoFromFile = (filePath) => {
-  // const fileExtension = getFilePathExtension(filePath);
   const fileAbsolutePath = getAbsolutePath(filePath);
   const fileInfo = readFile(fileAbsolutePath);
   return fileInfo;
@@ -20,18 +19,6 @@ export const getParsedFile = (file, fileExtension) => {
   switch (fileExtension) {
     case ('.json'): return JSON.parse(file);
     case ('.yml'): return yaml.load(file);
-    default: throw new Error('wrong extension');
-  };
-};
-
-export const getObjectFromPath = (filePath) => {
-  const fileExtentions = getFilePathExtension(filePath);
-  const absolutePath = getAbsolutePath(filePath);
-  const fileContent = readFile(absolutePath);
-
-  switch (fileExtentions) {
-    case ('.json'): return parseJson(fileContent);
-    case ('.yml'): return yaml.load(fileContent);
     default: throw new Error('wrong extension');
   }
 };
@@ -67,7 +54,9 @@ export const getDiffObject = (obj1, obj2) => {
 
 export const getResult = (arr) => {
   const sorted = _.sortBy(arr, ['key']);
-  const result = sorted.map(({ key, value, status, oldValue }) => {
+  const result = sorted.map(({
+    key, value, status, oldValue,
+  }) => {
     let newLine;
     switch (status) {
       case 'added': {

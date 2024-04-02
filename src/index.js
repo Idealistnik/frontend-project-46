@@ -4,7 +4,7 @@ import {
   getParsedFile,
   getFilePathExtension,
   getDiffObject,
-  getResult
+  getResult,
 } from './functions.js';
 
 const genDiff = (filePath1, filePath2) => {

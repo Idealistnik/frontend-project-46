@@ -2,9 +2,6 @@
 import { program } from 'commander';
 import genDiff from '../src/index.js';
 
-
-// const func = (genDiff) => (filepath1, filepath2) => genDiff(filepath1, filepath2);
-
 program
   .name('gendiff')
   .description('Compares two configuration files and shows a difference.')
@@ -15,9 +12,11 @@ program
   .helpOption('-h, --help', 'output more information')
   .action((filepath1, filepath2) => {
     const result = genDiff(filepath1, filepath2);
-   console.log(result);
+    console.log(result);
   });
 
-program.parse(); // этой командой считывается инфа передаваемая через командную строку (по идее работа с process.argv)
+program.parse();
+// этой командой считывается инфа передаваемая через командную
+// строку (по идее работа с process.argv)
 
 export default program;
