@@ -1,4 +1,3 @@
-import fs from 'fs';
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
 import genDiff from '../src/index.js';
@@ -15,9 +14,15 @@ const expectedData = `{
   + verbose: true
 }`;
 
-test('testing genDiff', () => {
+test('testing genDiff json', () => {
   const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
   const result = genDiff(getFixturePath('file1.json'), getFixturePath('file2.json'));
+  expect(result).toBe(expectedData);
+});
+
+test('testing genDiff yml', () => {
+  const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
+  const result = genDiff(getFixturePath('file1.yml'), getFixturePath('file2.yml'));
   expect(result).toBe(expectedData);
 });
 

@@ -18,6 +18,9 @@ link:
 
 demo:
 	asciinema rec demo.cast
+	
+upload-demo:
+	asciinema upload demo.cast
 
 test:
 	NODE_OPTIONS=--experimental-vm-modules npx jest

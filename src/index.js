@@ -1,11 +1,11 @@
 // тут функция для сравнения файлов
 import {
   getData,
-  getParsedData,
   getFilePathExtension,
   getDiffList,
   getDiffResult,
 } from './functions.js';
+import getParsedData from './parsers.js';
 
 const genDiff = (filePath1, filePath2) => {
   const firsrtFileInfo = getData(filePath1);

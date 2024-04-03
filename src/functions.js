@@ -1,13 +1,12 @@
 // тут все мелкие фукнции
 import path from 'path';
 import fs from 'fs';
-import yaml from 'js-yaml';
 import _ from 'lodash';
 
 export const getFileExtension = (file) => file.split('.').at(-1);
 export const getFilePathExtension = (filePath) => path.extname(filePath);
 export const getAbsolutePath = (filePath) => path.resolve(process.cwd(), filePath);
-export const readFile = (absolutePath) => fs.readFileSync(absolutePath);
+export const readFile = (absolutePath) => fs.readFileSync(absolutePath, 'utf-8');
 
 export const getData = (filePath) => {
   const fileAbsolutePath = getAbsolutePath(filePath);
@@ -15,35 +14,27 @@ export const getData = (filePath) => {
   return data;
 };
 
-export const getParsedData = (data, fileExtension) => {
-  switch (fileExtension) {
-    case ('.json'): return JSON.parse(data);
-    case ('.yml'): return yaml.load(data);
-    default: throw new Error('wrong extension');
-  }
-};
-
-export const getDiffList = (obj1, obj2) => {
-  const keys = _.union(_.keys(obj1), _.keys(obj2));
+export const getDiffList = (data1, data2) => {
+  const keys = _.union(_.keys(data1), _.keys(data2));
 
   const result = keys.reduce((acc, key) => {
     const newAcc = {};
-    if (!_.has(obj1, key)) {
+    if (!_.has(data1, key)) {
       newAcc.key = key;
-      newAcc.value = obj2[key];
+      newAcc.value = data2[key];
       newAcc.status = 'added';
-    } else if (!_.has(obj2, key)) {
+    } else if (!_.has(data2, key)) {
       newAcc.key = key;
-      newAcc.value = obj1[key];
+      newAcc.value = data1[key];
       newAcc.status = 'deleted';
-    } else if (obj1[key] !== obj2[key]) {
+    } else if (data1[key] !== data2[key]) {
       newAcc.key = key;
-      newAcc.oldValue = obj1[key];
-      newAcc.value = obj2[key];
+      newAcc.oldValue = data1[key];
+      newAcc.value = data2[key];
       newAcc.status = 'changed';
     } else {
       newAcc.key = key;
-      newAcc.value = obj1[key];
+      newAcc.value = data1[key];
       newAcc.status = 'unchanged';
     }
     return [...acc, newAcc];
