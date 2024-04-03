@@ -1,7 +1,10 @@
 # file: .github/workflows/testing.yml
-name: testing
+name: testing and lint
 # on – определяет события, которые запускают воркфлоу
-on: push
+# Trigger the workflow on push or pull request
+on:
+  - push
+  - pull_request
 jobs:
   # build – произвольно выбранное имя задания
   # их может быть больше одного
@@ -12,6 +15,14 @@ jobs:
       # экшен — выполняет какую-то задачу
       # checkout — клонирует репозиторий
       - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        # Configures the node version used on GitHub-hosted runners
+        # https://github.com/actions/setup-node
+        uses: actions/setup-node@v3
+        # The Node.js version to configure
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
       # run – произвольная bash-команда
       - run: make install
       - run: make test
