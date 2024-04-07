@@ -5,4 +5,5 @@
 ![example workflow](https://github.com/Idealistnik/frontend-project-46/actions/workflows/testing.yml/badge.svg)
 
 [![asciicast](https://asciinema.org/a/2IjdqEwvwMwnk1Jfz6DTVCarb.svg)](https://asciinema.org/a/2IjdqEwvwMwnk1Jfz6DTVCarb)
+
 [![asciicast](https://asciinema.org/a/vtf6DBVyRJUhywHJGNkmGv7JS.svg)](https://asciinema.org/a/vtf6DBVyRJUhywHJGNkmGv7JS)
