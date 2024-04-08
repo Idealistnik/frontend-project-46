@@ -1,9 +1,8 @@
 import fs from 'fs';
-import path from 'path';
-import _ from 'lodash';
-import { getDiffList, getIndent, getValue, getDiffResult, getData, getFilePathExtension } from './src/functions.js';
+import {
+  getDiffList, getData, getFilePathExtension,
+} from './src/functions.js';
 import getParsedData from './src/parsers.js';
-
 
 const firsrtFileInfo = getData('__fixtures__/file1.json');
 const secondFileInfo = getData('__fixtures__/file2.json');
@@ -16,7 +15,7 @@ const result = getDiffList(firstFile, secondFile);
 // fs.writeFileSync('result1.js', firstFile, 'utf-8');
 
 // console.log(getDiffResult1(result));
-fs.writeFileSync('resultDiff.js', JSON.stringify(result, null, "    "), 'utf-8');
+fs.writeFileSync('resultDiff.js', JSON.stringify(result, null, '    '), 'utf-8');
 // console.log(result);
 // const result1 = getDiffResult1(result);
 // console.log(JSON.stringify(result1, null, "      "));

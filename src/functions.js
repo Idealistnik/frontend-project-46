@@ -91,9 +91,6 @@ export const getDiffResult = (arr, depth = 0) => {
   return result;
 };
 
-
-
-
 // export const getValue = (data, spacer = '*', spacesCount = 4) => {
 //   const iter = (node, depth) => {
 //     if (!_.isObject(node)) {
