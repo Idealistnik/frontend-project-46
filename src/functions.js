@@ -10,26 +10,24 @@ export const readFile = (absolutePath) => fs.readFileSync(absolutePath, 'utf-8')
 
 export const getData = (filePath) => {
   const fileAbsolutePath = getAbsolutePath(filePath);
-  const data = readFile(fileAbsolutePath);
-  return data;
+  return readFile(fileAbsolutePath);
 };
 
 export const getDiffList = (data1, data2) => {
   const keys = _.union(_.keys(data1), _.keys(data2));
   const result = keys.reduce((acc, key) => {
-    if (Object.hasOwn(data1, key) && Object.hasOwn(data1, key)
-      && _.isObject(data1[key]) && _.isObject(data2[key])) {
-      const newAcc = {
-        key, status: 'nested', value: getDiffList(data1[key], data2[key]),
-      };
-      return [...acc, newAcc];
-    }
     if (!_.has(data1, key)) {
       const newAcc = { key, status: 'added', value: data2[key] };
       return [...acc, newAcc];
     }
     if (!_.has(data2, key)) {
       const newAcc = { key, status: 'deleted', value: data1[key] };
+      return [...acc, newAcc];
+    }
+    if (_.isObject(data1[key]) && _.isObject(data2[key])) {
+      const newAcc = {
+        key, status: 'nested', value: getDiffList(data1[key], data2[key]),
+      };
       return [...acc, newAcc];
     }
     if (data1[key] !== data2[key]) {
@@ -44,7 +42,12 @@ export const getDiffList = (data1, data2) => {
   return result;
 };
 
-export const getIndent = (depth) => '    '.repeat(depth);
+export const getIndent = (depth = 1) => {
+  const spacer = ' ';
+  const spacerCount = 4;
+  const indentBeforeKey = 2;
+  return spacer.repeat(depth * spacerCount - indentBeforeKey);
+};
 
 export const getValue = (data, depth) => {
   if (!_.isObject(data)) {
@@ -52,42 +55,35 @@ export const getValue = (data, depth) => {
   }
   const lines = Object
     .entries(data)
-    .map(([key, value]) => `${getIndent(depth)}${key}: ${getValue(value, depth + 1)}`);
-  return ['{', ...lines, `${getIndent(depth - 1)}}`].join('\n');
+    .map(([key, value]) => `${getIndent(depth - 0.5)}${key}: ${getValue(value, depth + 1)}`);
+  return ['{', ...lines, `${getIndent(depth - 1.5)}}`].join('\n');
 };
 
-export const getDiffResult = (arr, depth = 0) => {
+export const stylish = (arr, depth = 1) => {
   const sorted = _.sortBy(arr, ['key']);
   const lines = sorted.map(({
     key, value, status, oldValue,
   }) => {
-    let newLine;
     switch (status) {
       case 'added': {
-        newLine = `${getIndent(depth)}  + ${key}: ${getValue(value, depth + 2)}`;
-        break;
+        return `${getIndent(depth)}+ ${key}: ${getValue(value, depth + 2)}`;
       }
       case 'deleted': {
-        newLine = `${getIndent(depth)}  - ${key}: ${getValue(value, depth + 2)}`;
-        break;
+        return `${getIndent(depth)}- ${key}: ${getValue(value, depth + 2)}`;
       }
       case 'changed': {
-        newLine = `${getIndent(depth)}  - ${key}: ${getValue(oldValue, depth + 2)}\n  ${getIndent(depth)}+ ${key}: ${getValue(value, depth + 2)}`;
-        break;
+        return `${getIndent(depth)}- ${key}: ${getValue(oldValue, depth + 2)}\n${getIndent(depth)}+ ${key}: ${getValue(value, depth + 2)}`;
       }
       case 'unchanged': {
-        newLine = `${getIndent(depth)}    ${key}: ${getValue(value, depth + 2)}`;
-        break;
+        return `${getIndent(depth)}  ${key}: ${getValue(value, depth + 2)}`;
       }
       case 'nested': {
-        newLine = `${getIndent(depth)}    ${key}: ${getDiffResult(value, depth + 1)}`;
-        break;
+        return `${getIndent(depth)}  ${key}: ${stylish(value, depth + 1)}`;
       }
       default: throw new Error('wrong status value');
     }
-    return newLine;
   });
-  const result = ['{', ...lines, `${getIndent(depth)}}`].join('\n');
+  const result = ['{', ...lines, `${getIndent(depth - 0.5)}}`].join('\n');
   return result;
 };
 
