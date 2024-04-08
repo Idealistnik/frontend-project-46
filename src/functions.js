@@ -43,54 +43,82 @@ export const getDiffList = (data1, data2) => {
   }, []);
   return result;
 };
-export const getValue = (data, spacer = '*', spacesCount = 4) => {
-  const iter = (node, depth) => {
-    if (!_.isObject(node)) {
-      return `${node}`;
-    }
-    const indentSize = depth * spacesCount;
-    const currentIndent = spacer.repeat(indentSize);
-    const bracketIndent = spacer.repeat(indentSize - spacesCount);
-    const lines = Object
-      .entries(node)
-      .map(([key, value]) => `${currentIndent}${key}: ${iter(value, depth + 1)}`);
-    return ['{', ...lines, `${bracketIndent}}`].join('\n');
-  };
-  return iter(data, 1);
+
+export const getIndent = (depth) => '    '.repeat(depth);
+
+export const getValue = (data, depth) => {
+  if (!_.isObject(data)) {
+    return `${data}`;
+  }
+  const lines = Object
+    .entries(data)
+    .map(([key, value]) => `${getIndent(depth)}${key}: ${getValue(value, depth + 1)}`);
+  return ['{', ...lines, `${getIndent(depth - 1)}}`].join('\n');
 };
 
-export const getDiffResult = (arr) => {
+export const getDiffResult = (arr, depth = 0) => {
   const sorted = _.sortBy(arr, ['key']);
   const result = sorted.map(({
     key, value, status, oldValue,
   }) => {
     let newLine;
-    const spacer = '****';
     switch (status) {
       case 'added': {
-        newLine = `${spacer}**+ ${key}: ${_.isObject(value) ? getValue(value) : value}`;
+        newLine = `${getIndent(depth)}  + ${key}: ${getValue(value, depth + 2)}`;
         break;
       }
       case 'deleted': {
-        newLine = `${spacer}**- ${key}: ${_.isObject(value) ? getValue(value) : value}`;
+        newLine = `${getIndent(depth)}  - ${key}: ${getValue(value, depth + 2)}`;
         break;
       }
       case 'changed': {
-        newLine = `${spacer}**- ${key}: ${_.isObject(oldValue) ? getValue(oldValue) : oldValue}\n  ${spacer}+ ${key}: ${_.isObject(value) ? getValue(value) : value}`;
+        newLine = `${getIndent(depth)}  - ${key}: ${getValue(oldValue, depth + 2)}\n  ${getIndent(depth)}+ ${key}: ${getValue(value, depth + 2)}`;
         break;
       }
       case 'unchanged': {
-        newLine = `${spacer}****${key}: ${_.isObject(value) ? getValue(value) : value}`;
+        newLine = `${getIndent(depth)}    ${key}: ${getValue(value, depth + 2)}`;
         break;
       }
       case 'nested': {
-        newLine = `${spacer}****${key}: ${getDiffResult(value)}`;
+        newLine = `${getIndent(depth)}    ${key}: ${getDiffResult(value, depth + 1)}`;
         break;
       }
       default: throw new Error('wrong status value');
     }
     return newLine;
   });
-  const result1 = ['{', ...result, '}'].join('\n');
+  const result1 = ['{', ...result, `${getIndent(depth)}}`].join('\n');
   return result1;
 };
+
+
+
+
+// export const getValue = (data, spacer = '*', spacesCount = 4) => {
+//   const iter = (node, depth) => {
+//     if (!_.isObject(node)) {
+//       return `${node}`;
+//     }
+//     const indentSize = depth * spacesCount;
+//     const currentIndent = spacer.repeat(indentSize);
+//     const bracketIndent = spacer.repeat(indentSize - spacesCount);
+//     const lines = Object
+//       .entries(node)
+//       .map(([key, value]) => `${currentIndent}${key}: ${iter(value, depth + 1)}`);
+//     return ['{', ...lines, `${bracketIndent}}`].join('\n');
+//   };
+//   return iter(data, 1);
+// };
+
+// export const getValue = (data, depth) => {
+//   const iter = (node, depth1) => {
+//     if (!_.isObject(node)) {
+//       return `${node}`;
+//     }
+//     const lines = Object
+//       .entries(node)
+//       .map(([key, value]) => `${getIndent(depth)}${key}: ${iter(value, depth1 + 1)}`);
+//     return ['{', ...lines, `${getIndent(depth - 1)}}`].join('\n');
+//   };
+//   return iter(data, 1);
+// };
