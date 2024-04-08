@@ -16,4 +16,5 @@ const genDiff = (filePath1, filePath2) => {
   const result = getDiffResult(diffFile);
   return result;
 };
+
 export default genDiff;

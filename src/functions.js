@@ -58,7 +58,7 @@ export const getValue = (data, depth) => {
 
 export const getDiffResult = (arr, depth = 0) => {
   const sorted = _.sortBy(arr, ['key']);
-  const result = sorted.map(({
+  const lines = sorted.map(({
     key, value, status, oldValue,
   }) => {
     let newLine;
@@ -87,8 +87,8 @@ export const getDiffResult = (arr, depth = 0) => {
     }
     return newLine;
   });
-  const result1 = ['{', ...result, `${getIndent(depth)}}`].join('\n');
-  return result1;
+  const result = ['{', ...lines, `${getIndent(depth)}}`].join('\n');
+  return result;
 };
 
 

@@ -1,2 +1,5 @@
 node_modules/
 coverage
+resFile1.js
+resFile2.js
+resultDiff.js
