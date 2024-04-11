@@ -32,8 +32,7 @@ const stylish = (arr) => {
         default: throw new Error('wrong status value');
       }
     });
-    const result = lines.join('\n');
-    return result;
+    return lines.join('\n');
   };
   return `{\n${iter(arr)}\n}`;
 };
