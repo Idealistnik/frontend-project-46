@@ -16,16 +16,20 @@
 ## Пример использования:
 
 ### формат plain
-`gendiff --format plain path/to/file.yml another/path/file.json`
 
-```Property 'common.follow' was added with value: false
+`gendiff --format plain path/to/file.yml another/path/file.json`
+```
+Property 'common.follow' was added with value: false
 Property 'group1.baz' was updated. From 'bas' to 'bars'
-Property 'group2' was removed```
+Property 'group2' was removed
+```
 
 ### формат stylish
+
 `gendiff filepath1.json filepath2.json`
 
-```{
+```
+{
   + follow: false
     setting1: Value 1
   - setting2: 200
@@ -37,10 +41,11 @@ Property 'group2' was removed```
   + setting5: {
         key5: value5
     }
-}```
+}
+```
 
 ## Установка:
-Необходимо установить пакет с помощью следующей команды: `npm install @hexlet/code`
+Необходимо установить пакет с помощью следующей команды: **`npm install @hexlet/code`**:wink:
 
 [![asciicast](https://asciinema.org/a/2IjdqEwvwMwnk1Jfz6DTVCarb.svg)](https://asciinema.org/a/2IjdqEwvwMwnk1Jfz6DTVCarb)
 
