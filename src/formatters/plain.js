@@ -11,10 +11,9 @@ const plain = (arr) => {
   const iter = (node, str) => {
     const newArr = node.filter(({ status }) => status !== 'unchanged');
     const sorted = _.sortBy(newArr, ['key']);
-    const lines = sorted.map((property) => {
-      const {
-        key, value, status, oldValue,
-      } = property;
+    const lines = sorted.map(({
+      key, value, status, oldValue,
+    }) => {
       switch (status) {
         case 'added': {
           return `Property '${str}${key}' was added with value: ${valueType(value)}`;
@@ -31,8 +30,7 @@ const plain = (arr) => {
         default: throw new Error('wrong status value');
       }
     });
-    const result2 = lines.join('\n');
-    return result2;
+    return lines.join('\n');
   };
   return iter(arr, '');
 };
