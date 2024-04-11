@@ -13,22 +13,19 @@ export const getData = (filePath) => {
 
 const getDiffList = (data1, data2) => {
   const keys = _.union(_.keys(data1), _.keys(data2));
-  const result = keys.reduce((acc, key) => {
+  const diffList = keys.reduce((acc, key) => {
     if (!_.has(data1, key)) {
       const newAcc = { key, status: 'added', value: data2[key] };
       return [...acc, newAcc];
-    }
-    if (!_.has(data2, key)) {
+    } if (!_.has(data2, key)) {
       const newAcc = { key, status: 'deleted', value: data1[key] };
       return [...acc, newAcc];
-    }
-    if (_.isObject(data1[key]) && _.isObject(data2[key])) {
+    } if (_.isObject(data1[key]) && _.isObject(data2[key])) {
       const newAcc = {
         key, status: 'nested', value: getDiffList(data1[key], data2[key]),
       };
       return [...acc, newAcc];
-    }
-    if (data1[key] !== data2[key]) {
+    } if (data1[key] !== data2[key]) {
       const newAcc = {
         key, status: 'changed', oldValue: data1[key], value: data2[key],
       };
@@ -37,6 +34,6 @@ const getDiffList = (data1, data2) => {
     const newAcc = { key, status: 'unchanged', value: data1[key] };
     return [...acc, newAcc];
   }, []);
-  return result;
+  return diffList;
 };
 export default getDiffList;

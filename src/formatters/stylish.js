@@ -24,21 +24,11 @@ const stylish = (arr) => {
       key, value, status, oldValue,
     }) => {
       switch (status) {
-        case 'added': {
-          return `${getIndent(depth)}+ ${key}: ${getValue(value, depth + 1)}`;
-        }
-        case 'deleted': {
-          return `${getIndent(depth)}- ${key}: ${getValue(value, depth + 1)}`;
-        }
-        case 'changed': {
-          return `${getIndent(depth)}- ${key}: ${getValue(oldValue, depth + 1)}\n${getIndent(depth)}+ ${key}: ${getValue(value, depth + 1)}`;
-        }
-        case 'unchanged': {
-          return `${getIndent(depth)}  ${key}: ${getValue(value, depth + 1)}`;
-        }
-        case 'nested': {
-          return `${getIndent(depth)}  ${key}: {\n${iter(value, depth + 1)}\n${getIndent(depth)}  }`;
-        }
+        case 'added': return `${getIndent(depth)}+ ${key}: ${getValue(value, depth + 1)}`;
+        case 'deleted': return `${getIndent(depth)}- ${key}: ${getValue(value, depth + 1)}`;
+        case 'changed': return `${getIndent(depth)}- ${key}: ${getValue(oldValue, depth + 1)}\n${getIndent(depth)}+ ${key}: ${getValue(value, depth + 1)}`;
+        case 'unchanged': return `${getIndent(depth)}  ${key}: ${getValue(value, depth + 1)}`;
+        case 'nested': return `${getIndent(depth)}  ${key}: {\n${iter(value, depth + 1)}\n${getIndent(depth)}  }`;
         default: throw new Error('wrong status value');
       }
     });
