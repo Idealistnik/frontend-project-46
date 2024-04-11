@@ -16,7 +16,5 @@ program
   });
 
 program.parse();
-// этой командой считывается инфа передаваемая через командную
-// строку (по идее работа с process.argv)
 
 export default program;

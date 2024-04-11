@@ -1,9 +1,5 @@
 // тут функция для сравнения файлов
-import {
-  getData,
-  getFilePathExtension,
-  getDiffList,
-} from './functions.js';
+import getDiffList, { getData, getFilePathExtension } from './functions.js';
 import getFormat from './formatters/index.js';
 import getParsedData from './parsers.js';
 

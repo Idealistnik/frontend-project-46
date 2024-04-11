@@ -1,4 +1,3 @@
-// тут все мелкие фукнции
 import path from 'path';
 import fs from 'fs';
 import _ from 'lodash';
@@ -12,7 +11,7 @@ export const getData = (filePath) => {
   return readFile(fileAbsolutePath);
 };
 
-export const getDiffList = (data1, data2) => {
+const getDiffList = (data1, data2) => {
   const keys = _.union(_.keys(data1), _.keys(data2));
   const result = keys.reduce((acc, key) => {
     if (!_.has(data1, key)) {
@@ -40,3 +39,4 @@ export const getDiffList = (data1, data2) => {
   }, []);
   return result;
 };
+export default getDiffList;

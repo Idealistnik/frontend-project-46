@@ -11,3 +11,41 @@
 [![asciicast](https://asciinema.org/a/R2afqlsZcgTVA7dczrFB4Eh3q.svg)](https://asciinema.org/a/R2afqlsZcgTVA7dczrFB4Eh3q)
 
 [![asciicast](https://asciinema.org/a/XxPNuI4f3U7A1GnkMoEvsP7TJ.svg)](https://asciinema.org/a/XxPNuI4f3U7A1GnkMoEvsP7TJ)
+
+# Вычислитель отличий
+
+**Вычислитель отличий** – программа, определяющая разницу между двумя структурами данных (аналог онлайн сервисов, например http://www.jsondiff.com). 
+
+## Возможности утилиты:
+
+- Поддержка разных входных форматов: yaml, json
+- Генерация отчета в виде plain text, stylish и json
+
+## Пример использования:
+
+### формат plain
+gendiff --format plain path/to/file.yml another/path/file.json
+
+Property 'common.follow' was added with value: false
+Property 'group1.baz' was updated. From 'bas' to 'bars'
+Property 'group2' was removed
+
+### формат stylish
+gendiff filepath1.json filepath2.json
+
+`{
+  + follow: false
+    setting1: Value 1
+  - setting2: 200
+  - setting3: true
+  + setting3: {
+        key: value
+    }
+  + setting4: blah blah
+  + setting5: {
+        key5: value5
+    }
+}`
+
+## Установка:
+Для устаноки необходимо установить пакет с помощью следующей команды: `npm install @hexlet/code`
