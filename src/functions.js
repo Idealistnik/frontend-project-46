@@ -3,7 +3,6 @@ import path from 'path';
 import fs from 'fs';
 import _ from 'lodash';
 
-export const getFileExtension = (file) => file.split('.').at(-1);
 export const getFilePathExtension = (filePath) => path.extname(filePath);
 export const getAbsolutePath = (filePath) => path.resolve(process.cwd(), filePath);
 export const readFile = (absolutePath) => fs.readFileSync(absolutePath, 'utf-8');
@@ -49,43 +48,46 @@ export const getIndent = (depth = 1) => {
   return spacer.repeat(depth * spacerCount - indentBeforeKey);
 };
 
-export const getValue = (data, depth) => {
-  if (!_.isObject(data)) {
-    return `${data}`;
-  }
-  const lines = Object
-    .entries(data)
-    .map(([key, value]) => `${getIndent(depth - 0.5)}${key}: ${getValue(value, depth + 1)}`);
-  return ['{', ...lines, `${getIndent(depth - 1.5)}}`].join('\n');
-};
+// export const getValue = (data, depth) => {
+//   if (!_.isObject(data)) {
+//     return data;
+//   }
+//   const lines = Object
+//     .entries(data)
+//     .map(([key, value]) => `${getIndent(depth + 0.5)}${key}: ${getValue(value, depth + 1)}`);
+//   return ['{', ...lines, `${getIndent(depth - 0.5)}}`].join('\n');
+// };
 
-export const stylish = (arr, depth = 1) => {
-  const sorted = _.sortBy(arr, ['key']);
-  const lines = sorted.map(({
-    key, value, status, oldValue,
-  }) => {
-    switch (status) {
-      case 'added': {
-        return `${getIndent(depth)}+ ${key}: ${getValue(value, depth + 2)}`;
-      }
-      case 'deleted': {
-        return `${getIndent(depth)}- ${key}: ${getValue(value, depth + 2)}`;
-      }
-      case 'changed': {
-        return `${getIndent(depth)}- ${key}: ${getValue(oldValue, depth + 2)}\n${getIndent(depth)}+ ${key}: ${getValue(value, depth + 2)}`;
-      }
-      case 'unchanged': {
-        return `${getIndent(depth)}  ${key}: ${getValue(value, depth + 2)}`;
-      }
-      case 'nested': {
-        return `${getIndent(depth)}  ${key}: ${stylish(value, depth + 1)}`;
-      }
-      default: throw new Error('wrong status value');
-    }
-  });
-  const result = ['{', ...lines, `${getIndent(depth - 0.5)}}`].join('\n');
-  return result;
-};
+// export const stylish = (arr) => {
+//   const iter = (arr1, depth = 1) => {
+//     const sorted = _.sortBy(arr1, ['key']);
+//     const lines = sorted.map(({
+//       key, value, status, oldValue,
+//     }) => {
+//       switch (status) {
+//         case 'added': {
+//           return `${getIndent(depth)}+ ${key}: ${getValue(value, depth + 1)}`;
+//         }
+//         case 'deleted': {
+//           return `${getIndent(depth)}- ${key}: ${getValue(value, depth + 1)}`;
+//         }
+//         case 'changed': {
+//           return `${getIndent(depth)}- ${key}: ${getValue(oldValue, depth + 1)}\n${getIndent(depth)}+ ${key}: ${getValue(value, depth + 1)}`;
+//         }
+//         case 'unchanged': {
+//           return `${getIndent(depth)}  ${key}: ${getValue(value, depth + 1)}`;
+//         }
+//         case 'nested': {
+//           return `${getIndent(depth)}  ${key}: {\n${iter(value, depth + 1)}\n${getIndent(depth)}  }`;
+//         }
+//         default: throw new Error('wrong status value');
+//       }
+//     });
+//     const result = lines.join('\n');
+//     return result;
+//   };
+//   return `{\n${iter(arr)}\n}`;
+// };
 
 // export const getValue = (data, spacer = '*', spacesCount = 4) => {
 //   const iter = (node, depth) => {
@@ -114,4 +116,42 @@ export const stylish = (arr, depth = 1) => {
 //     return ['{', ...lines, `${getIndent(depth - 1)}}`].join('\n');
 //   };
 //   return iter(data, 1);
+// };
+
+// export const getValue = (data, depth) => {
+//   if (!_.isObject(data)) {
+//     return data;
+//   }
+//   const lines = Object
+//     .entries(data)
+//     .map(([key, value]) => `${getIndent(depth + 1.5)}${key}: ${getValue(value, depth + 1)}`);
+//   return ['{', ...lines, `${getIndent(depth + 0.5)}}`].join('\n');
+// };
+
+// export const stylish = (arr, depth = 1) => {
+//   const sorted = _.sortBy(arr, ['key']);
+//   const lines = sorted.map(({
+//     key, value, status, oldValue,
+//   }) => {
+//     switch (status) {
+//       case 'added': {
+//         return `${getIndent(depth)}+ ${key}: ${getValue(value, depth)}`;
+//       }
+//       case 'deleted': {
+//         return `${getIndent(depth)}- ${key}: ${getValue(value, depth)}`;
+//       }
+//       case 'changed': {
+//         return `${getIndent(depth)}- ${key}: ${getValue(oldValue, depth)}\n${getIndent(depth)}+ ${key}: ${getValue(value, depth)}`;
+//       }
+//       case 'unchanged': {
+//         return `${getIndent(depth)}  ${key}: ${getValue(value, depth)}`;
+//       }
+//       case 'nested': {
+//         return `${getIndent(depth)}  ${key}: ${stylish(value, depth + 1)}`;
+//       }
+//       default: throw new Error('wrong status value');
+//     }
+//   });
+//   const result = ['{', ...lines, `${getIndent(depth - 0.5)}}`].join('\n');
+//   return result;
 // };
