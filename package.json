@@ -10,7 +10,7 @@
   "bin": {
     "gendiff": "bin/diff.js"
   },
-  "author": "",
+  "author": "Nikita Pavlov",
   "license": "ISC",
   "dependencies": {
     "commander": "^12.0.0",
