@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-const valueType = (data) => {
+const getValueType = (data) => {
   if (_.isObject(data)) {
     return '[complex value]';
   }
@@ -16,13 +16,13 @@ const plain = (arr) => {
     }) => {
       switch (status) {
         case 'added': {
-          return `Property '${str}${key}' was added with value: ${valueType(value)}`;
+          return `Property '${str}${key}' was added with value: ${getValueType(value)}`;
         }
         case 'deleted': {
           return `Property '${str}${key}' was removed`;
         }
         case 'changed': {
-          return `Property '${str}${key}' was updated. From ${valueType(oldValue)} to ${valueType(value)}`;
+          return `Property '${str}${key}' was updated. From ${getValueType(oldValue)} to ${getValueType(value)}`;
         }
         case 'nested': {
           return iter(value, `${str}${key}.`);
