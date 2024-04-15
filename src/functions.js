@@ -13,27 +13,23 @@ export const getData = (filePath) => {
 
 const getDiffList = (data1, data2) => {
   const keys = _.union(_.keys(data1), _.keys(data2));
-  const diffList = keys.reduce((acc, key) => {
+  return keys.reduce((acc, key) => {
     if (!_.has(data1, key)) {
-      const newAcc = { key, status: 'added', value: data2[key] };
-      return [...acc, newAcc];
-    } if (!_.has(data2, key)) {
-      const newAcc = { key, status: 'deleted', value: data1[key] };
-      return [...acc, newAcc];
-    } if (_.isObject(data1[key]) && _.isObject(data2[key])) {
-      const newAcc = {
+      acc.push({ key, status: 'added', value: data2[key] });
+    } else if (!_.has(data2, key)) {
+      acc.push({ key, status: 'deleted', value: data1[key] });
+    } else if (_.isObject(data1[key]) && _.isObject(data2[key])) {
+      acc.push({
         key, status: 'nested', value: getDiffList(data1[key], data2[key]),
-      };
-      return [...acc, newAcc];
-    } if (data1[key] !== data2[key]) {
-      const newAcc = {
+      });
+    } else if (data1[key] !== data2[key]) {
+      acc.push({
         key, status: 'changed', oldValue: data1[key], value: data2[key],
-      };
-      return [...acc, newAcc];
+      });
+    } else {
+      acc.push({ key, status: 'unchanged', value: data1[key] });
     }
-    const newAcc = { key, status: 'unchanged', value: data1[key] };
-    return [...acc, newAcc];
+    return acc;
   }, []);
-  return diffList;
 };
 export default getDiffList;
