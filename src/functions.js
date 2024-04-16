@@ -13,23 +13,16 @@ export const getData = (filePath) => {
 
 const getDiffList = (data1, data2) => {
   const keys = _.union(_.keys(data1), _.keys(data2));
-  return keys.reduce((acc, key) => {
-    if (!_.has(data1, key)) {
-      acc.push({ key, status: 'added', value: data2[key] });
-    } else if (!_.has(data2, key)) {
-      acc.push({ key, status: 'deleted', value: data1[key] });
-    } else if (_.isObject(data1[key]) && _.isObject(data2[key])) {
-      acc.push({
-        key, status: 'nested', value: getDiffList(data1[key], data2[key]),
-      });
-    } else if (data1[key] !== data2[key]) {
-      acc.push({
+  return keys.map((key) => {
+    if (!_.has(data1, key)) return ({ key, status: 'added', value: data2[key] });
+    if (!_.has(data2, key)) return ({ key, status: 'deleted', value: data1[key] });
+    if (_.isObject(data1[key]) && _.isObject(data2[key])) return ({ key, status: 'nested', value: getDiffList(data1[key], data2[key]) });
+    if (data1[key] !== data2[key]) {
+      return ({
         key, status: 'changed', oldValue: data1[key], value: data2[key],
       });
-    } else {
-      acc.push({ key, status: 'unchanged', value: data1[key] });
     }
-    return acc;
-  }, []);
+    return ({ key, status: 'unchanged', value: data1[key] });
+  });
 };
 export default getDiffList;
