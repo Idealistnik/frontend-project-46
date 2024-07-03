@@ -1,10 +1,9 @@
 import yaml from 'js-yaml';
 
-const getParsedData = (data, fileExtension) => {
-  switch (fileExtension) {
-    case ('.json'): return JSON.parse(data);
-    case ('.yml'): case ('.yaml'): return yaml.load(data);
-    default: throw new Error('wrong extension');
-  }
+const map = {
+  json: (data) => JSON.parse(data),
+  yml: (data) => yaml.load(data),
+  yaml: (data) => yaml.load(data),
 };
+const getParsedData = (data, fileExtension) => map[fileExtension](data);
 export default getParsedData;
